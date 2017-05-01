@@ -6,4 +6,4 @@ The `Sparse Singular Value Decomposition for Biclustering` notebook contains the
 # Installation Instructions
 
 1) Either git clone this repository in order to obtain all the files, or 
-2) Execute the following in terminal `pip install Biclustering-SSVD` in order to download `ssvd_fast.py` and ssvd_original.py`.
+2) Execute the following in terminal `pip install Biclustering-SSVD` in order to download `ssvd_fast.py` and `ssvd_original.py`.

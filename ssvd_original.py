@@ -74,7 +74,6 @@ def ssvd_works(X,param=None):
         u1 = temp2
         u1 = u1/np.sqrt(sum(u1**2)) #u_new
 
-
         ud = np.sqrt(np.sum((u0-u1)**2))
         vd = np.sqrt(np.sum((v0-v1)**2))
         if iters > niter:

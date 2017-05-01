@@ -1,0 +1,67 @@
+Timer unit: 1e-06 s
+
+Total time: 38.336 s
+File: /home/krm58/Desktop/OneDrive/Documents/Duke/Statistics/Biclustering-SSVD/Biclustering-SSVD/ssvd_fast.py
+Function: ssvd at line 63
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    63                                           def ssvd(X,param=None):
+    64         1            7      7.0      0.0      n, d = X.shape
+    65         1            4      4.0      0.0      threu = 1
+    66         1            4      4.0      0.0      threv = 1
+    67         1            3      3.0      0.0      gamu = 0
+    68         1            3      3.0      0.0      gamv = 0
+    69         1      9099755 9099755.0     23.7      t1, t2, t3 = np.linalg.svd(X)
+    70         1            6      6.0      0.0      t3 = t3.T
+    71         1            5      5.0      0.0      u0 = t1[:,0]
+    72         1            2      2.0      0.0      v0 = t3[:,0]
+    73         1            1      1.0      0.0      merr = 10**-4
+    74         1            2      2.0      0.0      niter = 100
+    75         1            1      1.0      0.0      ud = 1
+    76         1            2      2.0      0.0      vd = 1
+    77         1            1      1.0      0.0      iters = 0
+    78         1         1259   1259.0      0.0      SST = np.sum(X**2)
+    79         1            2      2.0      0.0      a = 3.7
+    80         7           16      2.3      0.0      while (ud > merr or vd > merr):
+    81         6           12      2.0      0.0          iters = iters + 1
+    82         6         1969    328.2      0.0          z = np.matmul(X.T,u0)
+    83         6           41      6.8      0.0          winv = np.abs(z)**gamv
+    84         6          110     18.3      0.0          sigsq = (SST - np.sum(z**2))/(n*d-d)
+    85         6          208     34.7      0.0          tv = np.sort(np.append(np.abs(z**winv),0))
+    86         6           96     16.0      0.0          rv = np.sum(tv>0)
+    87         6          166     27.7      0.0          Bv = np.ones((d+1))*np.Inf
+    88         6           46      7.7      0.0          tmpI = np.arange(d-1,-1,-1)
+    89         6       103411  17235.2      0.3          Bv = updateV(Bv,tmpI,n,d,rv,tv,winv,z,u0,X,sigsq)
+    90         6          127     21.2      0.0          Iv = np.argmin(Bv) + 1
+    91         6          378     63.0      0.0          temp = np.sort(np.append(np.abs(np.multiply(z, winv)),0))
+    92         6           28      4.7      0.0          lv = temp[d-Iv]
+    93         6           84     14.0      0.0          paralambda = np.multiply(lv, winv[winv!=0])        
+    94         6           94     15.7      0.0          tmp= np.multiply(np.sign(z[winv!=0]),gt(np.abs(z[winv!=0]),paralambda))  
+    95         6           42      7.0      0.0          v1 = np.multiply(tmp, np.abs(z[winv!=0])-paralambda)   
+    96         6          160     26.7      0.0          v1 = v1/np.sqrt(np.sum(v1**2)) #v_new
+    97         6          903    150.5      0.0          z = np.matmul(X, v1)
+    98         6          144     24.0      0.0          winu = np.abs(z)**gamu
+    99         6          182     30.3      0.0          sigsq = (SST - np.sum(z**2))/(n*d-n)
+   100         6         4327    721.2      0.0          tu = np.sort(np.append(np.abs(np.multiply(z, winu)),0))
+   101         6          285     47.5      0.0          ru = np.sum((tu>0).astype('int'))
+   102         6          172     28.7      0.0          Bu = np.ones((n+1))*np.Inf
+   103         6          131     21.8      0.0          tmpI = np.arange(n-1,-1,-1)
+   104         6     29114051 4852341.8     75.9          Bu = updateU(Bu,tmpI,n,d,ru,tu,winu,z,X,v1,sigsq)
+   105         6          288     48.0      0.0          Iu = np.argmin(Bu)+1
+   106         6         4482    747.0      0.0          temp = np.sort(np.append(np.abs(np.multiply(z, winu)),0))
+   107         6           33      5.5      0.0          lu = temp[n-Iu]
+   108         6          342     57.0      0.0          paralambda = lu/winu[winu!=0]        
+   109         6          943    157.2      0.0          tmp= np.multiply(np.sign(z[winu!=0]),gt(np.abs(z[winu!=0]),paralambda))  
+   110         6          323     53.8      0.0          u1 = np.multiply(tmp, np.abs(z[winu!=0])-paralambda)    
+   111         6          434     72.3      0.0          u1 = u1/np.sqrt(np.sum(u1**2)) #u_new
+   112         6          817    136.2      0.0          ud = np.sqrt(np.sum((u0-u1)**2))
+   113         6           75     12.5      0.0          vd = np.sqrt(np.sum((v0-v1)**2)) 
+   114         6           12      2.0      0.0          if iters > niter:
+   115                                                       print('Fail to converge! Increase the niter!')
+   116                                                       break
+   117         6           12      2.0      0.0          u0 = u1
+   118         6           10      1.7      0.0          v0 = v1
+   119         1            2      2.0      0.0      u = u1
+   120         1            1      1.0      0.0      v = v1
+   121         1            2      2.0      0.0      return u,v,iters

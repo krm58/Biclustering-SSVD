@@ -6,4 +6,4 @@ The `Sparse SVD Optimized` notebook contains the final, optimized version of the
 # Installation Instructions
 
 1) Either git clone this repo, or 
-2) Execute the following in terminal `pip install Biclustering-SSVD
+2) Execute the following in terminal `pip install Biclustering-SSVD`
